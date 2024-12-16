@@ -2,16 +2,23 @@ import React from 'react';
 import { Terminal } from 'lucide-react';
 import { LoginForm } from './LoginForm';
 import { Divider } from './Divider';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
   const handleEmailLogin = (email: string, password: string) => {
     // Handle email/password login
     console.log('Login attempt with:', email, password);
+    // Simulate successful login
+    navigate('/profile');
   };
 
   const handleGoogleLogin = () => {
     // Handle Google SSO
     console.log('Google login clicked');
+    // Simulate successful login
+    navigate('/profile');
   };
 
   return (
@@ -51,9 +58,12 @@ export const LoginPage = () => {
         </div>
 
         <div className="mt-4 text-center">
-          <a href="/" className="text-[#64FFDA] hover:text-[#4CD9B9] text-sm">
+          <button 
+            onClick={() => navigate('/')} 
+            className="text-[#64FFDA] hover:text-[#4CD9B9] text-sm"
+          >
             Back to Home
-          </a>
+          </button>
         </div>
       </div>
     </div>
