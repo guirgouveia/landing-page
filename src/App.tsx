@@ -11,28 +11,34 @@ function App() {
   // Simple client-side routing
   const path = window.location.pathname;
 
+  // Wrap the entire app with the common layout
+  const Layout = ({ children }: { children: React.ReactNode }) => (
+    <div className="bg-[#0A1A2F] min-h-screen">
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  );
+
+  // Route-specific content
   if (path === '/login') {
     return <LoginPage />;
   }
 
   if (path === '/profile') {
     return (
-      <div className="bg-[#0A1A2F]">
-        <Navbar />
+      <Layout>
         <ProfilePage />
-        <Footer />
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="bg-[#0A1A2F]">
-      <Navbar />
+    <Layout>
       <Hero />
       <Services />
       <Contact />
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 
