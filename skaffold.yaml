@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: juma-frontend
+build:
+  artifacts:
+    - image: juma-frontend
+      docker:
+        dockerfile: Dockerfile
+      platforms: ["linux/amd64", "linux/arm64"]
+  tagPolicy:
+    sha256: {}
+deploy:
+  kubectl: {}
+portForward:
+  - resourceType: service
+    resourceName: frontend
+    port: 3000
+    localPort: 3000

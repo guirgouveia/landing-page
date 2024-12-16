@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, DollarSign, Shield } from 'lucide-react';
+import { Cloud, Database, Lock } from 'lucide-react';
 import { FeatureCard } from '../common/FeatureCard';
 
 export const HeroFeatures = () => {
@@ -11,14 +11,14 @@ export const HeroFeatures = () => {
         description="Expert guidance in migrating your infrastructure to the cloud with minimal disruption and maximum efficiency."
       />
       <FeatureCard
-        icon={<DollarSign className="h-8 w-8 text-[#64FFDA]" />}
-        title="Cloud Cost Optimization"
-        description="Optimize your cloud spending with our comprehensive cost analysis and management services."
+        icon={<Database className="h-8 w-8 text-[#64FFDA]" />}
+        title="Data Migration"
+        description="Secure and efficient transfer of your databases and data warehouses to cloud platforms."
       />
       <FeatureCard
-        icon={<Shield className="h-8 w-8 text-[#64FFDA]" />}
-        title="DevSecOps Integration"
-        description="Implement security-first practices with our integrated DevSecOps approach throughout your cloud journey."
+        icon={<Lock className="h-8 w-8 text-[#64FFDA]" />}
+        title="Security & Compliance"
+        description="Maintain security and compliance throughout your cloud migration journey."
       />
     </div>
   );
