@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, Briefcase, Building2 } from 'lucide-react';
+import { Mail, Briefcase, Building2, Edit2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface UserProfileProps {
   user: {
@@ -37,9 +38,13 @@ export const UserProfile = ({ user }: UserProfileProps) => {
           </div>
         </div>
 
-        <button className="mt-6 w-full bg-[#64FFDA] text-[#0A1A2F] py-2 px-4 rounded-md hover:bg-[#4CD9B9] transition-colors">
+        <Link 
+          to="/profile/edit"
+          className="mt-6 w-full inline-flex items-center justify-center bg-[#64FFDA] text-[#0A1A2F] py-2 px-4 rounded-md hover:bg-[#4CD9B9] transition-colors"
+        >
+          <Edit2 className="h-4 w-4 mr-2" />
           Edit Profile
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Mail, Lock } from 'lucide-react';
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
+  isLoading: boolean;
 }
 
-export const LoginForm = ({ onSubmit }: LoginFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
+export const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
     onSubmit(email, password);
   };
 
@@ -26,9 +27,8 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
           </div>
           <input
             id="email"
+            name="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             required
             className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-[#0A1A2F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#64FFDA] focus:border-transparent"
             placeholder="you@example.com"
@@ -46,9 +46,8 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
           </div>
           <input
             id="password"
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
             className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-[#0A1A2F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#64FFDA] focus:border-transparent"
             placeholder="••••••••"
@@ -56,28 +55,12 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-600 bg-[#0A1A2F] text-[#64FFDA] focus:ring-[#64FFDA]"
-          />
-          <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
-            Remember me
-          </label>
-        </div>
-
-        <a href="#" className="text-sm text-[#64FFDA] hover:text-[#4CD9B9]">
-          Forgot password?
-        </a>
-      </div>
-
       <button
         type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#0A1A2F] bg-[#64FFDA] hover:bg-[#4CD9B9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#64FFDA] transition-colors"
+        disabled={isLoading}
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-[#0A1A2F] bg-[#64FFDA] hover:bg-[#4CD9B9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#64FFDA] transition-colors disabled:opacity-50"
       >
-        Sign in
+        {isLoading ? 'Signing in...' : 'Sign in'}
       </button>
     </form>
   );

@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { apiService } from '../../services/api';
 
 interface User {
+  id: string;
   name: string;
   email: string;
   avatar: string;
   role: string;
   company: string;
+  isAdmin: boolean;
 }
 
 interface AuthContextType {
@@ -22,17 +24,34 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Check for existing session on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
       setError(null);
-      const userData = await apiService.login(email, password);
+      const userData = await apiService.auth.login(email, password);
       setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setError(message);
       throw err;
     } finally {
       setLoading(false);
@@ -43,10 +62,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      const userData = await apiService.googleLogin();
+      const userData = await apiService.auth.googleLogin();
       setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Google login failed');
+      const message = err instanceof Error ? err.message : 'Google login failed';
+      setError(message);
       throw err;
     } finally {
       setLoading(false);
@@ -54,9 +75,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    setUser(null);
-    // Additional logout logic (e.g., API call) can be added here
+    try {
+      await apiService.auth.logout();
+      localStorage.removeItem('user');
+    } finally {
+      setUser(null);
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen bg-[#0A1A2F] flex items-center justify-center">
+      <div className="text-[#64FFDA]">Loading...</div>
+    </div>;
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, googleLogin, logout, loading, error }}>
