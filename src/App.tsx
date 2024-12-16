@@ -5,13 +5,24 @@ import { Services } from './components/Services';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { LoginPage } from './components/auth/LoginPage';
+import { ProfilePage } from './components/profile/ProfilePage';
 
 function App() {
   // Simple client-side routing
-  const isLoginPage = window.location.pathname === '/login';
+  const path = window.location.pathname;
 
-  if (isLoginPage) {
+  if (path === '/login') {
     return <LoginPage />;
+  }
+
+  if (path === '/profile') {
+    return (
+      <div className="bg-[#0A1A2F]">
+        <Navbar />
+        <ProfilePage />
+        <Footer />
+      </div>
+    );
   }
 
   return (

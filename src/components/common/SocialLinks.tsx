@@ -11,7 +11,7 @@ export const SocialLinks = () => {
     },
     {
       icon: <Instagram className="h-5 w-5" />,
-      href: "https://instagram.com/juma/.devops",
+      href: "https://instagram.com/juma.devops",
       label: "Instagram",
       color: "hover:text-[#E4405F]"
     },
